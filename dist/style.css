@@ -195,7 +195,7 @@ main {
     gap: 8px;
 }
 
-.line-numbers {
+#counter {
     /* background-color: var(--red); */
     width: 30px;
     height: 100%;
@@ -205,7 +205,7 @@ main {
     align-items: center;
 }
 
-.line-numbers > span {
+#counter > span {
     /* background-color: var(--dark-grey); */
     color: var(--grey);
     width: 100%;

@@ -1,28 +1,30 @@
 const invoke = window.__TAURI__.invoke;
 const dialog = window.__TAURI__.dialog;
 const appWindow = window.__TAURI__.window.appWindow;
-// console.log(dialog);
+
+import { updateLineNumber } from './lineNumber.js';
 
 const textArea = document.querySelector("#text_area");
 
 const clearFile = () => {
     textArea.value = "";
+    updateLineNumber("from new")
 }
 
 const openFile = async () => {
     let pathName = await dialog.open({ title: "Open File", multiple: false, filters: [{ name: "Text", extensions: ["txt"] }, { name: "All Files", extensions: ["*"] }] });
     console.log(pathName);
     invoke("open_file", {filePath: pathName})
-        .then((message) => {
+        .then(async (message) => {
             console.log(message);
-            textArea.value = message;
+            textArea.value = await message;
+            updateLineNumber("from open");
         });
 }
 
 const saveFile = async () => {
     let textAreaContent = await textArea.value;
-    let pathName = await dialog.save({ title: "Save File", filters: [{ name: "Text", extensions: ["txt"] }, { name: "All Files", extensions: ["*"] }] }); // extension not showing
-    // console.log(textAreaContent);
+    let pathName = await dialog.save({ title: "Save File", filters: [{ name: "Text", extensions: ["txt"] }, { name: "All Files", extensions: ["*"] }] });
     invoke("save_file", {fileContent: textAreaContent, filePath: pathName});    
 }
 
